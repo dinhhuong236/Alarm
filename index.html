@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>10 Minute Timer</title>
+<title>Timer</title>
 </head>
 
 <body style="text-align:center;margin-top:120px;font-family:Arial">
@@ -27,7 +27,10 @@ let alarm = document.getElementById("alarm");
 
 function startTimer(){
 
-    // unlock audio trên iPhone
+    // xin quyền thông báo
+    Notification.requestPermission();
+
+    // unlock audio
     alarm.play().then(()=>{
         alarm.pause();
         alarm.currentTime = 0;
@@ -35,27 +38,31 @@ function startTimer(){
 
     document.querySelector("button").style.display="none";
 
-    interval = setInterval(function(){
+    interval = setInterval(updateTimer,1000);
+}
 
-        let min = Math.floor(time/60);
-        let sec = time % 60;
+function updateTimer(){
 
-        if(sec < 10) sec = "0"+sec;
+    let min = Math.floor(time/60);
+    let sec = time % 60;
 
-        document.getElementById("timer").innerHTML = min+":"+sec;
+    if(sec < 10) sec = "0"+sec;
 
-        if(time <= 0){
+    document.getElementById("timer").innerHTML = min+":"+sec;
 
-            clearInterval(interval);
+    if(time <= 0){
 
-            // phát nhạc ngay lập tức
-            alarm.play();
+        clearInterval(interval);
 
+        alarm.play();
+
+        if(Notification.permission === "granted"){
+            new Notification("Đã hết 10 phút");
         }
 
-        time--;
+    }
 
-    },1000);
+    time--;
 
 }
 
