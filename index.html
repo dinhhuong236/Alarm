@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Timer 10 phút</title>
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    margin-top:100px;
+}
+#timer{
+    font-size:60px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Đếm ngược 10 phút</h1>
+<div id="timer">10:00</div>
+
+<audio id="alarm" src="alarm.mp3"></audio>
+
+<script>
+let time = 6; // 600 giây = 10 phút
+let timerElement = document.getElementById("timer");
+let alarm = document.getElementById("alarm");
+
+function updateTimer(){
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+
+    seconds = seconds < 10 ? "0"+seconds : seconds;
+
+    timerElement.innerText = minutes + ":" + seconds;
+
+    if(time <= 0){
+        clearInterval(countdown);
+        alarm.play();
+        alert("Hết 10 phút!");
+    }
+
+    time--;
+}
+
+let countdown = setInterval(updateTimer,1000);
+</script>
+
+</body>
+</html>
