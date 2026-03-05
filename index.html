@@ -2,67 +2,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Timer</title>
+<title>Start Timer</title>
 </head>
 
-<body style="text-align:center;margin-top:120px;font-family:Arial">
+<body style="font-family:Arial;text-align:center;margin-top:120px">
 
-<h1>Đếm ngược 10 phút</h1>
-
-<div id="timer" style="font-size:70px">10:00</div>
-
-<button onclick="startTimer()" style="font-size:26px;padding:12px 30px">
-Tap để bắt đầu
-</button>
-
-<audio id="alarm" loop>
-<source src="alarm.mp3" type="audio/mpeg">
-</audio>
+<h2>Đang mở hẹn giờ 10 phút...</h2>
 
 <script>
 
-let time = 6;
-let interval;
-let alarm = document.getElementById("alarm");
+var ua = navigator.userAgent.toLowerCase();
 
-function startTimer(){
+if(ua.includes("android")){
 
-    // xin quyền thông báo
-    Notification.requestPermission();
+    window.location.href =
+    "intent:#Intent;action=android.intent.action.SET_TIMER;S.android.intent.extra.alarm.LENGTH=600;end";
 
-    // unlock audio
-    alarm.play().then(()=>{
-        alarm.pause();
-        alarm.currentTime = 0;
-    });
+}else if(ua.includes("iphone") || ua.includes("ipad")){
 
-    document.querySelector("button").style.display="none";
-
-    interval = setInterval(updateTimer,1000);
-}
-
-function updateTimer(){
-
-    let min = Math.floor(time/60);
-    let sec = time % 60;
-
-    if(sec < 10) sec = "0"+sec;
-
-    document.getElementById("timer").innerHTML = min+":"+sec;
-
-    if(time <= 0){
-
-        clearInterval(interval);
-
-        alarm.play();
-
-        if(Notification.permission === "granted"){
-            new Notification("Đã hết 10 phút");
-        }
-
-    }
-
-    time--;
+    window.location.href =
+    "https://www.icloud.com/shortcuts/7b1c5ab3deed4690ab5419d9e5f27f8e";
 
 }
 
