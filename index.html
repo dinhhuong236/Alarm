@@ -3,15 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Timer 10 phút</title>
+
 <style>
 body{
     font-family: Arial;
     text-align:center;
-    margin-top:100px;
+    margin-top:120px;
 }
+
 #timer{
-    font-size:60px;
+    font-size:70px;
     font-weight:bold;
+}
+
+button{
+    font-size:22px;
+    padding:12px 25px;
+    margin-top:20px;
 }
 </style>
 </head>
@@ -19,33 +27,47 @@ body{
 <body>
 
 <h1>Đếm ngược 10 phút</h1>
+
 <div id="timer">10:00</div>
 
-<audio id="alarm" src="alarm.mp3"></audio>
+<button onclick="startTimer()">Bắt đầu</button>
+
+<audio id="alarm" loop>
+<source src="alarm.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-let time = 6; // 600 giây = 10 phút
-let timerElement = document.getElementById("timer");
+
+let time = 6;
+let countdown;
 let alarm = document.getElementById("alarm");
 
-function updateTimer(){
-    let minutes = Math.floor(time / 60);
-    let seconds = time % 60;
+function startTimer(){
 
-    seconds = seconds < 10 ? "0"+seconds : seconds;
+    document.querySelector("button").style.display="none";
 
-    timerElement.innerText = minutes + ":" + seconds;
+    countdown = setInterval(function(){
 
-    if(time <= 0){
-        clearInterval(countdown);
-        alarm.play();
-        alert("Hết 10 phút!");
-    }
+        let minutes = Math.floor(time/60);
+        let seconds = time % 60;
 
-    time--;
+        seconds = seconds < 10 ? "0"+seconds : seconds;
+
+        document.getElementById("timer").innerHTML =
+        minutes + ":" + seconds;
+
+        if(time <= 0){
+            clearInterval(countdown);
+            alarm.play();
+            alert("Hết 10 phút!");
+        }
+
+        time--;
+
+    },1000);
+
 }
 
-let countdown = setInterval(updateTimer,1000);
 </script>
 
 </body>
