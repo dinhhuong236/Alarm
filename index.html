@@ -2,35 +2,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Timer 10 phút</title>
-
-<style>
-body{
-    font-family: Arial;
-    text-align:center;
-    margin-top:120px;
-}
-
-#timer{
-    font-size:70px;
-    font-weight:bold;
-}
-
-button{
-    font-size:22px;
-    padding:12px 25px;
-    margin-top:20px;
-}
-</style>
+<title>10 Minute Timer</title>
 </head>
 
-<body>
+<body style="text-align:center;margin-top:120px;font-family:Arial">
 
 <h1>Đếm ngược 10 phút</h1>
 
-<div id="timer">10:00</div>
+<div id="timer" style="font-size:70px">10:00</div>
 
-<button onclick="startTimer()">Bắt đầu</button>
+<button onclick="startTimer()" style="font-size:26px;padding:12px 30px">
+Tap để bắt đầu
+</button>
 
 <audio id="alarm" loop>
 <source src="alarm.mp3" type="audio/mpeg">
@@ -39,27 +22,35 @@ button{
 <script>
 
 let time = 6;
-let countdown;
+let interval;
 let alarm = document.getElementById("alarm");
 
 function startTimer(){
 
+    // unlock audio trên iPhone
+    alarm.play().then(()=>{
+        alarm.pause();
+        alarm.currentTime = 0;
+    });
+
     document.querySelector("button").style.display="none";
 
-    countdown = setInterval(function(){
+    interval = setInterval(function(){
 
-        let minutes = Math.floor(time/60);
-        let seconds = time % 60;
+        let min = Math.floor(time/60);
+        let sec = time % 60;
 
-        seconds = seconds < 10 ? "0"+seconds : seconds;
+        if(sec < 10) sec = "0"+sec;
 
-        document.getElementById("timer").innerHTML =
-        minutes + ":" + seconds;
+        document.getElementById("timer").innerHTML = min+":"+sec;
 
         if(time <= 0){
-            clearInterval(countdown);
+
+            clearInterval(interval);
+
+            // phát nhạc ngay lập tức
             alarm.play();
-            alert("Hết 10 phút!");
+
         }
 
         time--;
